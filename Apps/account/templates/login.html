@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bodyLogin.css' %}">
+    <title>login</title>
+</head>
+<body>
+<div class="  col-12 col-md-6 col-lg-4 col-xl-4 ">
+    <div class="card ">
+        <div class="card-body">
+            <h1 class="card-title">Login</h1>
+            <form class=" needs-validation " action="{% url 'login' %}" method="post">{% csrf_token %}
+
+                <div class="mb-3">
+                    {{ form.email.label }}
+                    {{ form.email }}
+                </div>
+                <div class="mb-3">
+                    {{ form.password.label }}
+                    {{ form.password }}
+                </div>
+
+                {% if form.non_field_errors or form.email.errors %}
+                    <div id="error-message" class="d-flex alert py-2  alert-warning gap-2 " role="alert">
+                        <strong>Oops!</strong>{{ form.non_field_errors.0 }} {{ form.email.errors.0 }}
+                    </div>
+                {% endif %}
+
+                <div class="d-flex justify-content-end ">
+                    <button type="submit" id="bnt_login" class="btn btn-primary ">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'js/alert.js' %}"></script>
+
+</body>
+</html>
