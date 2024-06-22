@@ -6,7 +6,6 @@ from django.contrib import messages
 from .forms import UploadFileForm
 from .models import Contract
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
 from openpyxl import Workbook
 
 
@@ -18,8 +17,8 @@ class UploadFileView(LoginRequiredMixin, FormView):
     form_class = UploadFileForm
     success_url = '/'
 
-    def get(self, request, *args, **kwargs):
-        context = self.get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         query = self.request.GET.get('q')
         contract_list = Contract.get_filtered_contracts(query)
 
@@ -32,7 +31,10 @@ class UploadFileView(LoginRequiredMixin, FormView):
             'Nombres', 'Apellidos', 'Número de documento', 'Inicio de contrato', 'Cuota semanal',
             'Marca del auto', 'Modelo del auto', 'Placa del auto'
         ]
+        return context
 
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
 
     def post(self, request, *args, **kwargs):
@@ -40,12 +42,11 @@ class UploadFileView(LoginRequiredMixin, FormView):
         if form.is_valid():
             if form.save():
                 messages.success(request, 'Archivo cargado correctamente')
-                return super().get(request, *args, **kwargs)
+                return redirect('upload_file')
             else:
                 messages.error(request, form.errors['file'][0])
         else:
             messages.error(request, form.errors['file'][0])
-
         return redirect('upload_file')
 
 

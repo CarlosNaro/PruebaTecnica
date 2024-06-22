@@ -22,8 +22,8 @@ class LoginPage(TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        form = CustomLoginForm(request.POST)
-        if form.is_valid(request):
+        form = CustomLoginForm(request.POST, request=request)
+        if form.is_valid():
             return redirect('/')
         return render(request, 'login.html', {'form': form})
 

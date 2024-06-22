@@ -46,7 +46,7 @@ class UploadFileForm(forms.Form):
                 car = Car.objects.get_or_create(
                     brand=row['Marca del auto'],
                     model=row['Modelo del auto'],
-                    plaque=row['Placa del auto']
+                    _plaque=row['Placa del auto']
                 )[0]
                 client = Client.objects.get_or_create(
                     first_name=row['Nombres'],
@@ -62,6 +62,6 @@ class UploadFileForm(forms.Form):
 
             except Exception as e:
                 self.add_error('file', f'Error en la fila {index + 2}: {str(e)}')
-                return False
+                return
 
         return True
